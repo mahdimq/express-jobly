@@ -1,0 +1,33 @@
+### GET ALL ROUTE
+GET http://localhost:3000/companies
+
+
+### GET SINGLE BY HANDLE ROUTE
+GET http://localhost:3000/companies/volvo
+
+
+### POST ROUTE
+POST http://localhost:3000/companies
+Content-Type: application/json
+
+{
+    "handle": "volvo",
+    "name": "Volvo Company",
+    "num_employees": 34500,
+    "description": "Auto Maker"
+}
+
+
+### PATCH ROUTE
+PATCH http://localhost:3000/companies/aapl
+Content-Type: application/json
+
+{
+    "handle": "aapl",
+    "name": "Apple Inc",
+    "logo_url": "https://tinyurl.com/y22dcvkx"
+}
+
+
+### DELETE ROUTE
+DELETE http://localhost:3000/companies/msft
