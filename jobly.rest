@@ -1,10 +1,11 @@
+#################################################################
+# ======================= COMPANIES ROUTES ======================
+
 ### GET ALL ROUTE
 GET http://localhost:3000/companies
 
-
 ### GET SINGLE BY HANDLE ROUTE
 GET http://localhost:3000/companies/volvo
-
 
 ### POST ROUTE
 POST http://localhost:3000/companies
@@ -17,7 +18,6 @@ Content-Type: application/json
     "description": "Auto Maker"
 }
 
-
 ### PATCH ROUTE
 PATCH http://localhost:3000/companies/aapl
 Content-Type: application/json
@@ -28,6 +28,51 @@ Content-Type: application/json
     "logo_url": "https://tinyurl.com/y22dcvkx"
 }
 
-
 ### DELETE ROUTE
 DELETE http://localhost:3000/companies/msft
+
+#################################################################
+# ========================= JOBS ROUTES =========================
+
+### GET ALL ROUTE
+GET http://localhost:3000/jobs?equity=5.5
+
+### POST ROUTE
+POST http://localhost:3000/jobs
+Content-Type: application/json
+
+# {
+#     "title": "Engineer",
+#     "salary": 50000,
+#     "equity": 2.5,
+#     "company_handle": "volvo"
+# }
+
+# {
+#     "title": "Scientist",
+#     "salary": 60000,
+#     "equity": 2.0,
+#     "company_handle": "aapl"
+# }
+
+{
+    "title": "Lawyer",
+    "salary": 200000,
+    "equity": 5.0,
+    "company_handle": "tsla"
+}
+
+### GET SINGLE ROUTE
+GET http://localhost:3000/jobs/7
+
+
+### PATCH ROUTE
+PATCH http://localhost:3000/jobs/7
+Content-Type: application/json
+
+{
+    "title": "Lawyer",
+    "salary": 250000,
+    "equity": 5.5,
+    "company_handle": "tsla"
+}

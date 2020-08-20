@@ -4,12 +4,14 @@ const express = require('express')
 const morgan = require('morgan')
 const ExpressError = require('./helpers/expressError')
 const companyRoutes = require('./routes/companies')
+const jobRoutes = require('./routes/jobs')
 
 const app = express()
 
 app.use(express.json())
 
 app.use('/companies', companyRoutes)
+app.use('/jobs', jobRoutes)
 
 // add logging system
 app.use(morgan('tiny'))
