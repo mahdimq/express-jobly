@@ -35,7 +35,7 @@ DELETE http://localhost:3000/companies/msft
 # ========================= JOBS ROUTES =========================
 
 ### GET ALL ROUTE
-GET http://localhost:3000/jobs?equity=5.5
+GET http://localhost:3000/jobs?equity=1
 
 ### POST ROUTE
 POST http://localhost:3000/jobs
@@ -63,11 +63,11 @@ Content-Type: application/json
 }
 
 ### GET SINGLE ROUTE
-GET http://localhost:3000/jobs/7
+GET http://localhost:3000/jobs/1
 
 
-### PATCH ROUTE
-PATCH http://localhost:3000/jobs/7
+### PATCH SINGLE ROUTE
+PATCH http://localhost:3000/jobs/9
 Content-Type: application/json
 
 {
@@ -76,3 +76,73 @@ Content-Type: application/json
     "equity": 5.5,
     "company_handle": "tsla"
 }
+
+### DELETE SINGLE ROUTE
+DELETE http://localhost:3000/jobs
+
+#################################################################
+# ======================== USERS ROUTES ========================
+
+### GET ALL USERS
+GET http://localhost:3000/users
+
+### CREATE A SINGLE USER
+POST http://localhost:3000/users
+Content-Type: application/json
+
+# {
+#     "username": "johnconner",
+#     "password": "password",
+#     "first_name": "John",
+#     "last_name": "Conner",
+#     "email": "john@conner.com",
+#     "photo_url": "http://picofjohn.com",
+#     "is_admin": true
+# }
+# {
+#     "username": "batman",
+#     "password": "password",
+#     "first_name": "Bruce",
+#     "last_name": "Wayne",
+#     "email": "batman@thebat.com",
+#     "photo_url": "http://batman.com",
+#     "is_admin": false
+# }
+# {
+#     "username": "superman",
+#     "password": "password",
+#     "first_name": "Clark",
+#     "last_name": "Kent",
+#     "email": "clark@kent.com",
+#     "photo_url": "http://superman.com",
+#     "is_admin": true
+# }
+{
+    "username": "fakeuser",
+    "password": "password",
+    "first_name": "Fake",
+    "last_name": "User",
+    "email": "fake@user.com",
+    "photo_url": "http://baduser.com",
+    "is_admin": true
+}
+
+### GET SINGLE USER
+GET http://localhost:3000/users/batman
+
+### UPDATE A SINGLE USER
+PATCH http://localhost:3000/users/superman
+Content-Type: application/json
+
+{
+     "username": "superman",
+    "password": "password",
+    "first_name": "Clark",
+    "last_name": "Kent",
+    "email": "clark@kent.com",
+    "photo_url": "http://superman.com",
+    "is_admin": false
+}
+
+### DELETE A SINGLE USER
+DELETE http://localhost:3000/users/fakeuser

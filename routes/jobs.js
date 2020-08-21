@@ -8,9 +8,9 @@ const ExpressError = require('../helpers/expressError')
 // GET ALL JOBS
 router.get('/', async (req, res, next) => {
 	try {
-		const { search, min_salary, min_equity } = req.query
+		const { search, salary, equity } = req.query
 
-		const jobs = await Job.findAll(search, min_salary, min_equity)
+		const jobs = await Job.findAll(search, salary, equity)
 		return res.json({ jobs })
 	} catch (err) {
 		return next(err)

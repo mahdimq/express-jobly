@@ -7,14 +7,13 @@ class Job {
 		const result = await db.query(
 			`SELECT *
 			 FROM jobs
-			 WHERE company_handle ILIKE $1
+			 WHERE title ILIKE $1
 			 AND salary >= $2
-			 AND equity >= $3
 			 ORDER BY date_posted`,
-			[`%${search}%`, min_salary, min_equity]
+			[`%${search}%`, min_salary]
 		)
 
-		if (result.rows.length === 0) throw new expressError('Job not found', 404)
+		if (result.rows.length === 0) throw new ExpressError('Job not found', 404)
 		return result.rows
 	}
 
@@ -26,10 +25,20 @@ class Job {
 			[id]
 		)
 
-		if (result.rows.length === 0)
-			throw new ExpressError(`There are no jobs with an id of '${id}'`, 404)
+		const job = result.rows[0]
 
-		return result.rows[0]
+		if (job === 0) throw new ExpressError(`There are no jobs with an id of '${id}'`, 404)
+
+		const companyInfo = await db.query(
+			`SELECT name, num_employees, description, logo_url
+        FROM companies
+        WHERE handle = $1`,
+			[job.company_handle]
+		)
+
+		job.company = companyInfo.rows[0]
+
+		return job
 	}
 
 	static async create(data) {
@@ -47,25 +56,13 @@ class Job {
 	}
 
 	static async update(id, data) {
-		const result = await db.query(
-			`UPDATE jobs
-		   SET title=$1, salary=$2, equity=$3, company_handle=$4
-		   WHERE id=$5
-		   RETURNING *`,
-			[data.title, data.salary, data.equity, data.company_handle]
-		)
+		let { query, values } = sqlForPartialUpdate('jobs', data, 'id', id)
 
-		if (result.rows.length === 0)
-			throw new expressError(`There are no jobs with an id of '${id}'`, 404)
+		const result = await db.query(query, values)
 
-		// return result.rows[0]
-		// let { query, values } = sqlForPartialUpdate('jobs', data, 'id', id)
-
-		// const result = await db.query(query, values)
-
-		// if (!result.rows[0]) {
-		// 	throw new ExpressError(`There are no jobs with an id of '${id}'`, 404)
-		// }
+		if (!result.rows[0]) {
+			throw new ExpressError(`There are no jobs with an id of '${id}'`, 404)
+		}
 
 		return result.rows[0]
 	}

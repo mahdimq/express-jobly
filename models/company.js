@@ -121,7 +121,7 @@ class Company {
 		const company = result.rows[0]
 
 		if (!company) {
-			throw new ExpressError(`There exists no company '${handle}`, 404)
+			throw new ExpressError(`There is no company with a handle '${handle}`, 404)
 		}
 
 		return company
