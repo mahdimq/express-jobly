@@ -1,6 +1,8 @@
 const db = require('../db')
 const sqlForPartialUpdate = require('../helpers/partialUpdate')
 const ExpressError = require('../helpers/expressError')
+const bcrypt = require('bcrypt')
+const { BCRYPT_WORK_FACTOR } = require('../config')
 
 class User {
 	static async findAll() {
@@ -26,26 +28,46 @@ class User {
 
 		if (!user) throw new ExpressError(`There are no users with a username of '${username}'`, 404)
 
-		// const companyInfo = await db.query(
-		// 	`SELECT name, num_employees, description, logo_url
-		//       FROM companies
-		//       WHERE handle = $1`,
-		// 	[user.company_handle]
-		// )
-
-		// user.company = companyInfo.rows[0]
-
 		return user
 	}
 
+	static async authenticate(data) {
+		const result = await db.query(
+			`
+        SELECT username, password, is_admin
+        FROM users
+        WHERE username = $1
+        `,
+			[data.username]
+		)
+		let user = result.rows[0]
+		if (await bcrypt.compare(data.password, user.password)) {
+			// make a jwt
+			const token = jwt.sign({ user }, SECRET_KEY)
+			return { token }
+		}
+	}
+
 	static async create(data) {
+		const duplicateCheck = await db.query(
+			`SELECT username
+		    FROM users
+		    WHERE username = $1`,
+			[data.username]
+		)
+		if (duplicateCheck.rows[0])
+			throw new ExpressError(`User already exists with username '${data.username}`, 400)
+
+		// Hash the password entered by user
+		const hashedPassword = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
+
 		const result = await db.query(
 			`INSERT INTO users (username, password, first_name, last_name, email, photo_url, is_admin)
-	       VALUES ($1, $2, $3, $4, $5, $6, $7)
-	       RETURNING *`,
+		     VALUES ($1, $2, $3, $4, $5, $6, $7)
+		     RETURNING *`,
 			[
 				data.username,
-				data.password,
+				hashedPassword,
 				data.first_name,
 				data.last_name,
 				data.email,
@@ -53,9 +75,7 @@ class User {
 				data.is_admin
 			]
 		)
-		if (result.rows.length === 0) {
-			throw new ExpressError('User could not be added', 400)
-		}
+		if (result.rows.length === 0) throw new ExpressError('User could not be added', 400)
 
 		return result.rows[0]
 	}
@@ -83,6 +103,28 @@ class User {
 		if (result.rows.length === 0) {
 			throw new ExpressError(`There are no users with a username of '${username}'`, 404)
 		}
+	}
+
+	static async authenticate(data) {
+		// try to find the user first
+		const result = await db.query(
+			`SELECT username, password, first_name, last_name, email, photo_url, is_admin
+       FROM users
+       WHERE username = $1`,
+			[data.username]
+		)
+
+		const user = result.rows[0]
+
+		if (user) {
+			// compare hashed password to a new hash from password
+			const isValid = await bcrypt.compare(data.password, user.password)
+			if (isValid) {
+				return user
+			}
+		}
+
+		throw ExpressError('Invalid Password', 401)
 	}
 }
 

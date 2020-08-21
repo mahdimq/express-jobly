@@ -1,11 +1,22 @@
 #################################################################
 # ======================= COMPANIES ROUTES ======================
+#################################################################
 
 ### GET ALL ROUTE
 GET http://localhost:3000/companies
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
 
 ### GET SINGLE BY HANDLE ROUTE
 GET http://localhost:3000/companies/volvo
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
 
 ### POST ROUTE
 POST http://localhost:3000/companies
@@ -15,7 +26,9 @@ Content-Type: application/json
     "handle": "volvo",
     "name": "Volvo Company",
     "num_employees": 34500,
-    "description": "Auto Maker"
+    "description": "Auto Maker",
+
+    "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
 }
 
 ### PATCH ROUTE
@@ -25,7 +38,9 @@ Content-Type: application/json
 {
     "handle": "aapl",
     "name": "Apple Inc",
-    "logo_url": "https://tinyurl.com/y22dcvkx"
+    "logo_url": "https://tinyurl.com/y22dcvkx",
+
+    "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
 }
 
 ### DELETE ROUTE
@@ -33,9 +48,15 @@ DELETE http://localhost:3000/companies/msft
 
 #################################################################
 # ========================= JOBS ROUTES =========================
+#################################################################
 
 ### GET ALL ROUTE
 GET http://localhost:3000/jobs?equity=1
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
 
 ### POST ROUTE
 POST http://localhost:3000/jobs
@@ -64,6 +85,11 @@ Content-Type: application/json
 
 ### GET SINGLE ROUTE
 GET http://localhost:3000/jobs/1
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
 
 
 ### PATCH SINGLE ROUTE
@@ -82,12 +108,19 @@ DELETE http://localhost:3000/jobs
 
 #################################################################
 # ======================== USERS ROUTES ========================
+#################################################################
 
 ### GET ALL USERS
 GET http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
+
 
 ### CREATE A SINGLE USER
-POST http://localhost:3000/users
+POST http://localhost:3000/users?_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhdG1hbiIsImlzX2FkbWluIjpmYWxzZSwiaWF0IjoxNTk4MDIzNjkwfQ.eDFipX0xHAKDv6kPWkktHG-muxib8cwJfNipkVCpVU4
 Content-Type: application/json
 
 # {
@@ -117,32 +150,65 @@ Content-Type: application/json
 #     "photo_url": "http://superman.com",
 #     "is_admin": true
 # }
+# {
+#     "username": "hulk",
+#     "password": "password",
+#     "first_name": "Bruce",
+#     "last_name": "Banner",
+#     "email": "hulk@marvel.com",
+#     "photo_url": "http://hulk.com",
+#     "is_admin": true
+# }
 {
-    "username": "fakeuser",
+    "username": "username",
     "password": "password",
-    "first_name": "Fake",
-    "last_name": "User",
-    "email": "fake@user.com",
-    "photo_url": "http://baduser.com",
-    "is_admin": true
+    "first_name": "User",
+    "last_name": "Name",
+    "email": "user@name.com",
+    "photo_url": "http://username.com",
+    "is_admin": false
 }
 
 ### GET SINGLE USER
-GET http://localhost:3000/users/batman
+GET http://localhost:3000/users/superman
+Content-Type: application/json
+
+# ADMIN TOKEN
+# {
+#   "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+# }
+
+# NOT ADMIN TOKEN
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhdG1hbiIsImlzX2FkbWluIjpmYWxzZSwiaWF0IjoxNTk4MDIzMDg5fQ.8NjmQrfyV_dPZpf-Rnatu3vFumT1CctiCRzDlmc9ey4"
+}
+
 
 ### UPDATE A SINGLE USER
-PATCH http://localhost:3000/users/superman
+PATCH http://localhost:3000/users/fakeuser
 Content-Type: application/json
 
 {
-     "username": "superman",
-    "password": "password",
-    "first_name": "Clark",
-    "last_name": "Kent",
-    "email": "clark@kent.com",
-    "photo_url": "http://superman.com",
-    "is_admin": false
+    "username": "fakeuser",
+    "first_name": "Fake2",
+    "last_name": "User",
+
+    "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
 }
 
 ### DELETE A SINGLE USER
 DELETE http://localhost:3000/users/fakeuser
+
+
+#################################################################
+# ========================= AUTH ROUTES =========================
+#################################################################
+
+### LOGIN ROUTE
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "batman",
+    "password": "password"
+}

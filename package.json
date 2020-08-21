@@ -16,7 +16,7 @@
     "jsonschema": "^1.2.6",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "pg": "^8.3.0",
+    "pg": "^8.3.2",
     "supertest": "^4.0.2"
   }
 }

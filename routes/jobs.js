@@ -3,10 +3,12 @@ const Job = require('../models/job')
 const router = new express.Router()
 const jsonschema = require('jsonschema')
 const jobSchema = require('../schemas/jobSchema.json')
+const updateJobSchema = require('../schemas/updateJobSchema.json')
 const ExpressError = require('../helpers/expressError')
+const { ensureLoggedIn, isAdmin } = require('../middleware/auth')
 
 // GET ALL JOBS
-router.get('/', async (req, res, next) => {
+router.get('/', ensureLoggedIn, async (req, res, next) => {
 	try {
 		const { search, salary, equity } = req.query
 
@@ -18,7 +20,7 @@ router.get('/', async (req, res, next) => {
 })
 
 // POST JOB
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin, async (req, res, next) => {
 	try {
 		const result = jsonschema.validate(req.body, jobSchema)
 		if (!result.valid) throw new ExpressError(result.errors.map((err) => err.stack, 400))
@@ -31,7 +33,7 @@ router.post('/', async (req, res, next) => {
 })
 
 // GET SINGLE JOB
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', ensureLoggedIn, async (req, res, next) => {
 	try {
 		const job = await Job.findById(req.params.id)
 		return res.json({ job })
@@ -41,9 +43,9 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // UPDATE SINGLE JOB
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', isAdmin, async (req, res, next) => {
 	try {
-		const result = jsonschema.validate(req.body, jobSchema)
+		const result = jsonschema.validate(req.body, updateJobSchema)
 		if (!result.valid) {
 			const listOfErrors = result.errors.map((err) => err.stack)
 			return next({
@@ -59,7 +61,7 @@ router.patch('/:id', async (req, res, next) => {
 })
 
 // DELETE SINGLE JOB
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdmin, async (req, res, next) => {
 	try {
 		const job = await Job.delete(req.params.id)
 		return res.json({ message: 'Job deleted' })
