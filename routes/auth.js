@@ -18,16 +18,16 @@ router.post('/login', async function (req, res, next) {
 	}
 })
 
-router.post('/signup', async (req, res, next) => {
-	try {
-		const user = req.body
+// router.post('/signup', async (req, res, next) => {
+// 	try {
+// 		const user = req.body
 
-		const result = await User.create(user)
+// 		const result = await User.create(user)
 
-		return res.status(201).json(result)
-	} catch (e) {
-		return next(e)
-	}
-})
+// 		return res.status(201).json(result)
+// 	} catch (e) {
+// 		return next(e)
+// 	}
+// })
 
 module.exports = router

@@ -1,5 +1,5 @@
 const db = require('../db')
-const sqlForPartialUpdate = require('../helpers/partialUpdate')
+const update = require('../helpers/partialUpdate')
 const ExpressError = require('../helpers/expressError')
 const bcrypt = require('bcrypt')
 const { BCRYPT_WORK_FACTOR } = require('../config')
@@ -49,6 +49,7 @@ class User {
 	}
 
 	static async create(data) {
+		const { username, password, first_name, last_name, email, photo_url, is_admin } = data
 		const duplicateCheck = await db.query(
 			`SELECT username
 		    FROM users
@@ -59,21 +60,13 @@ class User {
 			throw new ExpressError(`User already exists with username '${data.username}`, 400)
 
 		// Hash the password entered by user
-		const hashedPassword = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
+		const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR)
 
 		const result = await db.query(
 			`INSERT INTO users (username, password, first_name, last_name, email, photo_url, is_admin)
 		     VALUES ($1, $2, $3, $4, $5, $6, $7)
 		     RETURNING *`,
-			[
-				data.username,
-				hashedPassword,
-				data.first_name,
-				data.last_name,
-				data.email,
-				data.photo_url,
-				data.is_admin
-			]
+			[username, hashedPassword, first_name, last_name, email, photo_url, is_admin]
 		)
 		if (result.rows.length === 0) throw new ExpressError('User could not be added', 400)
 
@@ -81,15 +74,16 @@ class User {
 	}
 
 	static async update(username, data) {
-		let { query, values } = sqlForPartialUpdate('users', data, 'username', username)
+		let { query, values } = update('users', data, 'username', username)
 
 		const result = await db.query(query, values)
+		const user = result.rows[0]
 
-		if (!result.rows[0]) {
+		if (!user) {
 			throw new ExpressError(`There are no users with a username of '${username}'`, 404)
 		}
 
-		return result.rows[0]
+		return user
 	}
 
 	static async delete(username) {

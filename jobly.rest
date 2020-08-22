@@ -62,29 +62,36 @@ Content-Type: application/json
 POST http://localhost:3000/jobs
 Content-Type: application/json
 
-# {
-#     "title": "Engineer",
-#     "salary": 50000,
-#     "equity": 2.5,
-#     "company_handle": "volvo"
-# }
+{
+    "title": "Engineer",
+    "salary": 50000,
+    "equity": 0.9,
+    "company_handle": "volvo",
+
+    "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+}
 
 # {
 #     "title": "Scientist",
 #     "salary": 60000,
-#     "equity": 2.0,
-#     "company_handle": "aapl"
+#     "equity": 0.1,
+#     "company_handle": "aapl",
+
+#     "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
 # }
 
-{
-    "title": "Lawyer",
-    "salary": 200000,
-    "equity": 5.0,
-    "company_handle": "tsla"
-}
+# {
+#     "title": "Lawyer",
+#     "salary": 200000,
+#     "equity": 0.2,
+#     "company_handle": "tsla",
+
+#     "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
+
+# }
 
 ### GET SINGLE ROUTE
-GET http://localhost:3000/jobs/1
+GET http://localhost:3000/jobs/2
 Content-Type: application/json
 
 {
@@ -99,8 +106,10 @@ Content-Type: application/json
 {
     "title": "Lawyer",
     "salary": 250000,
-    "equity": 5.5,
-    "company_handle": "tsla"
+    "equity": 0.7,
+    "company_handle": "tsla",
+
+    "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1bGsiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNTk4MDIzMDQxfQ.j0QMFLdF3bHVib93xApNHnmgU9LssUpL7v2W4zZL9VA"
 }
 
 ### DELETE SINGLE ROUTE
@@ -160,7 +169,7 @@ Content-Type: application/json
 #     "is_admin": true
 # }
 {
-    "username": "username",
+    "username": "username2",
     "password": "password",
     "first_name": "User",
     "last_name": "Name",
@@ -185,11 +194,11 @@ Content-Type: application/json
 
 
 ### UPDATE A SINGLE USER
-PATCH http://localhost:3000/users/fakeuser
+PATCH http://localhost:3000/users/username
 Content-Type: application/json
 
 {
-    "username": "fakeuser",
+    "username": "username",
     "first_name": "Fake2",
     "last_name": "User",
 
@@ -197,7 +206,13 @@ Content-Type: application/json
 }
 
 ### DELETE A SINGLE USER
-DELETE http://localhost:3000/users/fakeuser
+DELETE http://localhost:3000/users/username
+Content-Type: application/json
+
+{
+  "_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaXNfYWRtaW4iOmZhbHNlLCJpYXQiOjE1OTgwODU2MzN9.WF62KxlGi7rnR2Ankr5ZxuAashqIo-XWjmygJFoYT5E"
+}
+
 
 
 #################################################################
@@ -209,6 +224,6 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "batman",
+    "username": "username",
     "password": "password"
 }

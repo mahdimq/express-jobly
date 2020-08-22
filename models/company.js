@@ -1,5 +1,5 @@
 const db = require('../db')
-const sqlForPartialUpdate = require('../helpers/partialUpdate')
+const update = require('../helpers/partialUpdate')
 const ExpressError = require('../helpers/expressError')
 
 class Company {
@@ -99,7 +99,7 @@ class Company {
 	}
 
 	static async update(handle, data) {
-		let { query, values } = sqlForPartialUpdate('companies', data, 'handle', handle)
+		let { query, values } = update('companies', data, 'handle', handle)
 
 		const result = await db.query(query, values)
 		const company = result.rows[0]

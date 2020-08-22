@@ -1,10 +1,12 @@
 const express = require('express')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 const jsonschema = require('jsonschema')
 const userSchema = require('../schemas/userSchema.json')
 const updateUserSchema = require('../schemas/updateUserSchema.json')
 const ExpressError = require('../helpers/expressError')
 const { ensureCorrectUser, ensureLoggedIn } = require('../middleware/auth')
+const { SECRET_KEY } = require('../config')
 const router = new express.Router()
 
 // GET ALL USERS
@@ -47,6 +49,10 @@ router.get('/:username', ensureLoggedIn, async (req, res, next) => {
 // UPDATE A SINGLE USER
 router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
 	try {
+		if ('username' in req.body || 'is_admin' in req.body) {
+			throw new ExpressError('You are not allowed to change username or is_admin properties.', 400)
+		}
+
 		const result = jsonschema.validate(req.body, updateUserSchema)
 		if (!result.valid) {
 			const listOfErrors = result.errors.map((err) => err.stack)
@@ -55,6 +61,7 @@ router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
 				error: listOfErrors
 			})
 		}
+
 		const user = await User.update(req.params.username, req.body)
 		return res.json({ user })
 	} catch (err) {
