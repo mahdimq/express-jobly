@@ -31,23 +31,6 @@ class User {
 		return user
 	}
 
-	static async authenticate(data) {
-		const result = await db.query(
-			`
-        SELECT username, password, is_admin
-        FROM users
-        WHERE username = $1
-        `,
-			[data.username]
-		)
-		let user = result.rows[0]
-		if (await bcrypt.compare(data.password, user.password)) {
-			// make a jwt
-			const token = jwt.sign({ user }, SECRET_KEY)
-			return { token }
-		}
-	}
-
 	static async create(data) {
 		const { username, password, first_name, last_name, email, photo_url, is_admin } = data
 		const duplicateCheck = await db.query(
@@ -100,26 +83,43 @@ class User {
 	}
 
 	static async authenticate(data) {
-		// try to find the user first
 		const result = await db.query(
-			`SELECT username, password, first_name, last_name, email, photo_url, is_admin
-       FROM users
-       WHERE username = $1`,
+			`
+        SELECT username, password, is_admin
+        FROM users
+        WHERE username = $1
+        `,
 			[data.username]
 		)
-
 		const user = result.rows[0]
-
-		if (user) {
-			// compare hashed password to a new hash from password
-			const isValid = await bcrypt.compare(data.password, user.password)
-			if (isValid) {
-				return user
-			}
+		if (await bcrypt.compare(data.password, user.password)) {
+			// make a jwt
+			const token = jwt.sign({ user }, SECRET_KEY)
+			return { token }
 		}
-
-		throw ExpressError('Invalid Password', 401)
 	}
+
+	// static async authenticate(data) {
+	// 	// try to find the user first
+	// 	const result = await db.query(
+	// 		`SELECT username, password, first_name, last_name, email, photo_url, is_admin
+	//      FROM users
+	//      WHERE username = $1`,
+	// 		[data.username]
+	// 	)
+
+	// 	const user = result.rows[0]
+
+	// 	if (user) {
+	// 		// compare hashed password to a new hash from password
+	// 		const isValid = await bcrypt.compare(data.password, user.password)
+	// 		if (isValid) {
+	// 			return user
+	// 		}
+	// 	}
+
+	// 	throw ExpressError('Invalid Password', 401)
+	// }
 }
 
 module.exports = User

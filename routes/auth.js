@@ -2,8 +2,6 @@ const express = require('express')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const { SECRET_KEY } = require('../config')
-
-const ExpressError = require('../helpers/expressError')
 const router = new express.Router()
 
 // authenticate a user and return a JSON Web Token
