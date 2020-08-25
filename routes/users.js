@@ -49,9 +49,9 @@ router.get('/:username', ensureLoggedIn, async (req, res, next) => {
 // UPDATE A SINGLE USER
 router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
 	try {
-		if ('username' in req.body || 'is_admin' in req.body) {
-			throw new ExpressError('You are not allowed to change username or is_admin properties.', 400)
-		}
+		// if ('username' in req.body || 'is_admin' in req.body) {
+		// 	throw new ExpressError('You are not allowed to change username or admin properties.', 400)
+		// }
 
 		const result = jsonschema.validate(req.body, updateUserSchema)
 		if (!result.valid) {
@@ -63,7 +63,7 @@ router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
 		}
 
 		const user = await User.update(req.params.username, req.body)
-		return res.json({ user })
+		return res.json(user)
 	} catch (err) {
 		return next(err)
 	}
@@ -72,7 +72,7 @@ router.patch('/:username', ensureCorrectUser, async (req, res, next) => {
 // DELETE A SINGLE USER
 router.delete('/:username', ensureCorrectUser, async (req, res, next) => {
 	try {
-		const result = await User.delete(req.params.username)
+		await User.delete(req.params.username)
 		return res.json({ message: 'User deleted' })
 	} catch (err) {
 		return next(err)

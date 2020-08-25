@@ -83,12 +83,12 @@ describe('GET SINGLE /jobs/:id', async () => {
 		expect(JSON.parse(res.text).message).toBe('Unauthorized, you must login first')
 	})
 	test('Responds with 404 if job is not found', async () => {
-		const res = await request(app).get(`/jobs/999/?_token=${DATA.tokens.userToken}`)
-		console.log('#############')
-		console.log('#############')
-		console.log('RES.BODY: ', res)
-		console.log('#############')
-		console.log('#############')
+		const res = await request(app).get(`/jobs/999/?_token=${DATA.tokens.adminToken}`)
+
+		console.log('########')
+		console.log('RES STATUS:', res.status)
+		console.log('RES BODY:', res.body)
+		console.log('########')
 		expect(res.status).toBe(404)
 	})
 })

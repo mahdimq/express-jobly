@@ -33,24 +33,17 @@ function isAdmin(req, res, next) {
 
 function ensureCorrectUser(req, res, next) {
 	try {
-		// let token = req.body._token || req.query._token
+		let token = req.body._token || req.query._token
 
-		// token = jwt.verify(token, SECRET_KEY)
-		// res.username = token.username
-		// res.is_admin = token.is_admin
+		token = jwt.verify(token, SECRET_KEY)
+		res.username = token.username
+		res.is_admin = token.is_admin
 
-		// if (token.is_admin || token.username === req.params.username) {
-		// 	return next()
-		// } else {
-		// 	throw new ExpressError('Unauthorized', 401)
-		// }
-		const token = req.body._token || req.query._token
-		const payload = jwt.verify(token, SECRET_KEY)
-
-		req.username = payload
-		if (req.user.username === req.params.username) return next()
-
-		return next(new ExpressError("You cannot view another user's page", 401))
+		if (token.is_admin || token.username === req.params.username) {
+			return next()
+		} else {
+			throw new ExpressError('Unauthorized, you must login first', 401)
+		}
 	} catch (err) {
 		return next(err)
 	}
