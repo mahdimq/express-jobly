@@ -1,12 +1,12 @@
-const db = require('../db')
-const update = require('../helpers/partialUpdate')
-const ExpressError = require('../helpers/expressError')
+const db = require('../db');
+const update = require('../helpers/partialUpdate');
+const ExpressError = require('../helpers/expressError');
 
 class Company {
 	static async findAll(data) {
-		let { search = '', min_employees = 0, max_employees = 9999999 } = data
+		let { search = '', min_employees = 0, max_employees = 9999999 } = data;
 		if (min_employees > max_employees)
-			throw new ExpressError('MIN employees should be less than MAX employees', 400)
+			throw new ExpressError('MIN employees should be less than MAX employees', 400);
 
 		const result = await db.query(
 			`SELECT handle, name
@@ -15,10 +15,10 @@ class Company {
 		   AND num_employees BETWEEN $2 AND $3
 		   ORDER BY name`,
 			[`%${search}%`, min_employees, max_employees]
-		)
-
-		if (!result.rows) throw new ExpressError('Match not found', 400)
-		return result.rows
+		);
+		// FIND A WAY TO SEARCH ON DEMAND RATHER THAN MAKING ADDTIONAL QUERIES <---
+		if (!result.rows) throw new ExpressError('Match not found', 400);
+		return result.rows;
 	}
 
 	// static async findBySearch(data) {
@@ -73,18 +73,19 @@ class Company {
 	// 	}
 	// }
 
+	// MAKE THIS MORE GENERIC TO HANDLE SEARCH
 	static async findByHandle(handle) {
 		const result = await db.query(
 			`SELECT handle, name, num_employees, description, logo_url
        FROM companies
        WHERE handle = $1`,
 			[handle]
-		)
+		);
 
 		if (result.rows.length === 0)
-			throw new ExpressError(`There is no company with a handle '${handle}`, 404)
+			throw new ExpressError(`There is no company with a handle '${handle}`, 404);
 
-		return result.rows[0]
+		return result.rows[0];
 	}
 
 	static async create(data) {
@@ -93,22 +94,22 @@ class Company {
        VALUES ($1, $2, $3, $4, $5)
        RETURNING handle, name, num_employees, description, logo_url`,
 			[data.handle, data.name, data.num_employees, data.description, data.logo_url]
-		)
+		);
 
-		return result.rows[0]
+		return result.rows[0];
 	}
 
 	static async update(handle, data) {
-		let { query, values } = update('companies', data, 'handle', handle)
+		let { query, values } = update('companies', data, 'handle', handle);
 
-		const result = await db.query(query, values)
-		const company = result.rows[0]
+		const result = await db.query(query, values);
+		const company = result.rows[0];
 
 		if (!company) {
-			throw new ExpressError(`There is no company with a handle '${handle}`, 404)
+			throw new ExpressError(`There is no company with a handle '${handle}`, 404);
 		}
 
-		return company
+		return company;
 	}
 
 	static async delete(handle) {
@@ -117,12 +118,12 @@ class Company {
        WHERE handle=$1
        RETURNING handle`,
 			[handle]
-		)
+		);
 
 		if (result.rows.length === 0) {
-			throw new ExpressError(`There is no company with a handle '${handle}`, 404)
+			throw new ExpressError(`There is no company with a handle '${handle}`, 404);
 		}
 	}
 }
 
-module.exports = Company
+module.exports = Company;

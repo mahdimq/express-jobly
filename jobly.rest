@@ -3,7 +3,7 @@
 #################################################################
 
 ### GET ALL ROUTE
-GET http://localhost:3000/companies
+GET http://localhost:3000/companies?search=tsla
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### GET SINGLE BY HANDLE ROUTE
-GET http://localhost:3000/companies/volvo
+GET http://localhost:3000/companies/aapl
 Content-Type: application/json
 
 {
